@@ -18,7 +18,7 @@ glbUpload.addEventListener("change", (e)=>{
             const arrayBuffer = e.target.result;
             loader.parse(arrayBuffer, '', function(gltf){
                 const model = gltf.scene;
-                // model.scale.set(0.20, 0.20, 0.20)
+                // model.scale.set(0.020, 0.020, 0.020)
                 threejs.addToScene(model)
                 physics.addModel(model);
             }, function(error){
@@ -33,11 +33,8 @@ glbUpload.addEventListener("change", (e)=>{
 async function main() {
 
     await physics.init();
-    physics.debuging = true;
+    // physics.debuging = true;
     
-    // physics.makeGround();
-    // console.log("executed")
-    threejs.physics = physics;
     threejs.initiate();
 
     physics.simulate();

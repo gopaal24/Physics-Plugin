@@ -47,9 +47,18 @@ export class ThreejsScene {
         directional.shadow.camera.bottom = -10;
         this.addToScene(directional);
 
-        // Uncomment to see the light's position
-        // const helper = new THREE.DirectionalLightHelper(directional, 5);
-        // this.addToScene(helper);
+        // const light1 = new THREE.SpotLight(undefined, 0.6)
+        // light1.position.set(2.5, 5, 5)
+        // light1.angle = Math.PI / 3
+        // light1.penumbra = 0.5
+        // light1.castShadow = true
+        // light1.shadow.blurSamples = 10
+        // light1.shadow.radius = 5
+        // this.addToScene(light1)
+
+        // const light2 = light1.clone()
+        // light2.position.set(-2.5, 5, 5)
+        // this.addToScene(light2)
     }
 
     addToScene(obj) {
