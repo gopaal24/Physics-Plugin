@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+#controls {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+select, input {
+    width: 100%;
+    padding: 5px;
+    margin: 5px 0;
+}
+.controls{
+    position: fixed;
+    background: beige;
+    padding: 20px;
+    border-radius: 20px;
+    right: 20px;
+    top: 20px;
+}
+label {
+    display: block;
+    margin-top: 10px;
+}
+#colliderProperties {
+    margin-top: 20px;
+}

@@ -1,62 +1,67 @@
-import GUI from 'lil-gui';
-
 export class Controls {
-    params = {
-        colliderOptions: {
-            colliderType: 'auto',
-            shape: {
-                length: "1",
-                width: "1",
-                height: "1",
-                radius: "0.5"
+    constructor() {
+        this.params = {
+            colliderOptions: {
+                colliderType: 'auto',
+                shape: {
+                    length: "1",
+                    width: "1",
+                    height: "1",
+                    radius: "0.5"
+                }
             }
-        }
+        };
+        this.colliderTypeSelect = document.getElementById('colliderType');
+        this.colliderProperties = document.getElementById('colliderProperties');
+        this.setupEventListeners();
+        this.updateGUI();
     }
 
-    constructor() {
-        this.gui = new GUI();
-        this.folder = null;
-        this.setupGUI();
+    setupEventListeners() {
+        this.colliderTypeSelect.addEventListener('change', () => {
+            this.params.colliderOptions.colliderType = this.colliderTypeSelect.value;
+            this.updateGUI();
+        });
     }
 
     updateGUI() {
-        this.folder = this.gui.addFolder(`Collider Properties: ${this.params.colliderOptions.colliderType}`);
+        this.colliderProperties.innerHTML = ''; // Clear existing properties
         
         switch (this.params.colliderOptions.colliderType) {
             case 'box':
-                this.folder.add(this.params.colliderOptions.shape, 'length').name('Length');
-                this.folder.add(this.params.colliderOptions.shape, 'width').name('Width');
-                this.folder.add(this.params.colliderOptions.shape, 'height').name('Height');
+                this.addInput('length', 'Length');
+                this.addInput('width', 'Width');
+                this.addInput('height', 'Height');
                 break;
             case 'sphere':
-                this.folder.add(this.params.colliderOptions.shape, 'radius').name('Radius');
+                this.addInput('radius', 'Radius');
                 break;
             case 'cone':
-                this.folder.add(this.params.colliderOptions.shape, 'radius').name('Radius');
-                this.folder.add(this.params.colliderOptions.shape, 'height').name('Height');
-                break;
             case 'cylinder':
-                this.folder.add(this.params.colliderOptions.shape, 'radius').name('Radius');
-                this.folder.add(this.params.colliderOptions.shape, 'height').name('Height');
+                this.addInput('radius', 'Radius');
+                this.addInput('height', 'Height');
                 break;
             case 'plane':
-                this.folder.add(this.params.colliderOptions.shape, 'length').name('Length');
-                this.folder.add(this.params.colliderOptions.shape, 'width').name('Width');
+                this.addInput('length', 'Length');
+                this.addInput('width', 'Width');
                 break;
             case 'auto':
             default:
                 break;
         }
-
-        this.folder.open();
     }
 
-    setupGUI() {        
-        this.gui.add(this.params.colliderOptions, 'colliderType', ['auto', 'box', 'sphere', 'plane', 'cone', 'cylinder'])
-            .name("Shape")
-            .onChange(() => this.updateGUI());
+    addInput(property, label) {
+        const inputElement = document.createElement('div');
+        inputElement.innerHTML = `
+            <label for="${property}">${label}:</label>
+            <input type="number" id="${property}" value="${this.params.colliderOptions.shape[property]}">
+        `;
+        this.colliderProperties.appendChild(inputElement);
         
-        // Initial setup of the folder
-        this.updateGUI();
+        const input = inputElement.querySelector('input');
+        input.addEventListener('change', (e) => {
+            this.params.colliderOptions.shape[property] = e.target.value;
+        });
     }
 }

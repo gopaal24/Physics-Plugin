@@ -17,9 +17,25 @@
           padding: 20px;
         }
     </style>
+
+    <link rel="stylesheet" href="./src/css/styles.css">
+
 </head>
 <body>
     <input type="file" name="glb" id="glb" accept=".glb">
+    <div class="controls">
+      <h2>Collider Controls</h2>
+          <label for="colliderType">Shape:</label>
+          <select id="colliderType">
+              <option value="auto">Auto</option>
+              <option value="box">Box</option>
+              <option value="sphere">Sphere</option>
+              <option value="plane">Plane</option>
+              <option value="cone">Cone</option>
+              <option value="cylinder">Cylinder</option>
+          </select>
+          <div id="colliderProperties"></div>
+    </div>
 </body>
 <script type="importmap">
     {
