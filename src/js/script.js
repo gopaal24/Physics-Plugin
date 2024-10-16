@@ -1,10 +1,12 @@
-
 import { Physics } from "./physics.js";
 import { ThreejsScene } from "./sceneSetup.js";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js"
+import { Controls } from "./controls.js";
 
 const threejs = new ThreejsScene();
 const physics = new Physics(threejs);
+
+const gui = new Controls;
 
 const glbUpload = document.getElementById("glb");
 const loader = new GLTFLoader();
@@ -18,7 +20,6 @@ glbUpload.addEventListener("change", (e)=>{
             const arrayBuffer = e.target.result;
             loader.parse(arrayBuffer, '', function(gltf){
                 const model = gltf.scene;
-                // model.scale.set(0.020, 0.020, 0.020)
                 threejs.addToScene(model)
                 physics.addModel(model);
             }, function(error){
@@ -30,14 +31,28 @@ glbUpload.addEventListener("change", (e)=>{
     }
 })
 
-async function main() {
-
+async function addPhysics() {
+    
     await physics.init();
-    // physics.debuging = true;
+    physics.debuging = true;
     
     threejs.initiate();
-
+    
     physics.simulate();
 }
 
-main().catch(console.error);
+
+function main(){
+
+    threejs.createShape('cube', {x: 2, y: 2, z: 2}, {color: 0xff0000}, {x: -2, y: 5, z: 0});
+    threejs.createShape('sphere', {x: 1.5}, {color: 0x0000ff}, {x: 2, y: 5, z: 0});
+    threejs.createShape('cylinder', {x: 1, y: 1, z: 3}, {color: 0x00ff00}, {x: -5, y: 5, z: 0});
+    threejs.createShape('torus', {x: 1.5, y: 0.4}, {color: 0xffff00}, {x: 6, y: 5, z: 0});
+    threejs.createShape('knot', {x: 1, y: 0.4}, {color: 0xffff00}, {x: -9, y: 5, z: 0});
+    
+    threejs.addRaycast(physics);
+
+    addPhysics().catch(console.error);
+}
+
+main();

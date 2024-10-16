@@ -94,9 +94,13 @@ export class Physics {
 
   addModel(model) {
     const modelBody = this.world.createRigidBody(
-      RAPIER.RigidBodyDesc.dynamic().setTranslation(0, 5, 0).setCanSleep(true)
+      RAPIER.RigidBodyDesc.dynamic().setTranslation(0, 5, 0)
+      .setCanSleep(true)
     );
 
+    if(model.children.length > 1){
+      
+    }
     model.traverse((object) => {
       if (object.isMesh) {
         object.updateMatrix();
@@ -122,8 +126,9 @@ export class Physics {
         }
 
         const modelShape = RAPIER.ColliderDesc.convexHull(modelVertices)
-          .setMass(10)
-          .setRestitution(0.5);
+          .setMass(1)
+          .setRestitution(1.0)
+          .setDensity(20.5);
 
         this.world.createCollider(modelShape, modelBody);
         this.dynamicBodies.push([model, modelBody]);
