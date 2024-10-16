@@ -9,10 +9,13 @@ export class Controls {
                     height: "1",
                     radius: "0.5"
                 }
-            }
+            },
+            rigidBodyType : "fixed"
         };
         this.colliderTypeSelect = document.getElementById('colliderType');
         this.colliderProperties = document.getElementById('colliderProperties');
+        this.rigidBodyType = document.getElementById('rigidBody');
+        this.properties = document.getElementById('properties');
         this.setupEventListeners();
         this.updateGUI();
     }
@@ -20,6 +23,10 @@ export class Controls {
     setupEventListeners() {
         this.colliderTypeSelect.addEventListener('change', () => {
             this.params.colliderOptions.colliderType = this.colliderTypeSelect.value;
+            this.updateGUI();
+        });
+        this.rigidBodyType.addEventListener('change', () => {
+            this.params.rigidBodyType = this.rigidBodyType.value;
             this.updateGUI();
         });
     }
@@ -46,6 +53,17 @@ export class Controls {
                 this.addInput('width', 'Width');
                 break;
             case 'auto':
+            default:
+                break;
+        }
+
+        switch (this.params.rigidBodyType) {
+            case 'dynamic' :
+                this.properties.style.display = "block"
+                break;
+            case "fixed" : 
+                this.properties.style.display = "none"
+                break;
             default:
                 break;
         }

@@ -35,6 +35,27 @@
               <option value="cylinder">Cylinder</option>
           </select>
           <div id="colliderProperties"></div>
+
+          <label for="rigidBody">Rigid Body:</label>
+          <select name="rigidBody" id="rigidBody">
+            <option value="fixed">Fixed</option>
+            <option value="dynamic">Dynamic</option>
+          </select>
+
+          <div id="properties">
+            <label for="gravity">Gravity</label>
+            <input type="number" id="gravity" value="-9.8">
+            <label for="mass">Mass</label>
+            <input type="number" id="mass" value="1">
+            <label for="linDamp">Linear Damping</label>
+            <input type="number" id="linDamp" value="1">
+  
+            <label for="friction">Friction:</label>
+            <input type="number" id="friction" value="0.3">
+  
+            <label for="bounciness">Bounciness:</label>
+            <input type="number" id="bounciness" value="1">
+          </div>
     </div>
 </body>
 <script type="importmap">
