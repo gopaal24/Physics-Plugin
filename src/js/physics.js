@@ -92,48 +92,46 @@ export class Physics {
     this.dynamicBodies.push([cylinderMesh, cylinderBody]);
   }
 
-  addModel(model) {
-    const modelBody = this.world.createRigidBody(
-      RAPIER.RigidBodyDesc.dynamic().setTranslation(0, 5, 0)
-      .setCanSleep(true)
-    );
-
-    if(model.children.length > 1){
-      
-    }
-    model.traverse((object) => {
-      if (object.isMesh) {
-        object.updateMatrix();
-        object.updateWorldMatrix(true, false);
-        object.castShadow = true;
-
-        const geometry = object.geometry;
-
-        const worldMatrix = object.matrixWorld;
-        const points = geometry.attributes.position.array;
-
-        const tempVector = new THREE.Vector3();
-        const modelVertices = new Float32Array(points.length);
-
-        for (let i = 0; i < points.length; i += 3) {
-          tempVector.set(points[i], points[i + 1], points[i + 2]);
-
-          tempVector.applyMatrix4(worldMatrix);
-
-          modelVertices[i] = tempVector.x;
-          modelVertices[i + 1] = tempVector.y;
-          modelVertices[i + 2] = tempVector.z;
-        }
-
-        const modelShape = RAPIER.ColliderDesc.convexHull(modelVertices)
-          .setMass(1)
-          .setRestitution(1.0)
-          .setDensity(20.5);
-
-        this.world.createCollider(modelShape, modelBody);
-        this.dynamicBodies.push([model, modelBody]);
-      }
-    });
+  addModel(model) { 
+    const modelPosition = new THREE.Vector3();
+    model.getWorldPosition(modelPosition);
+    
+    const modelBody = this.world.createRigidBody( 
+      RAPIER.RigidBodyDesc.dynamic()
+        .setTranslation(modelPosition.x, modelPosition.y, modelPosition.z)
+        .setCanSleep(true) 
+    ); 
+  
+    model.traverse((object) => { 
+      if (object.isMesh) { 
+        const geometry = object.geometry; 
+        const worldMatrix = object.matrixWorld; 
+        const points = geometry.attributes.position.array; 
+  
+        const tempVector = new THREE.Vector3(); 
+        const modelVertices = new Float32Array(points.length); 
+  
+        for (let i = 0; i < points.length; i += 3) { 
+          tempVector.set(points[i], points[i + 1], points[i + 2]); 
+          tempVector.applyMatrix4(worldMatrix); 
+          tempVector.sub(modelPosition); 
+  
+          modelVertices[i] = tempVector.x; 
+          modelVertices[i + 1] = tempVector.y; 
+          modelVertices[i + 2] = tempVector.z; 
+        } 
+  
+        const modelShape = RAPIER.ColliderDesc.convexHull(modelVertices) 
+          .setMass(1) 
+          .setRestitution(1.2)
+  
+        this.world.createCollider(modelShape, modelBody); 
+        this.dynamicBodies.push([model, modelBody]); 
+      } 
+    }); 
+    
+    
+    model.position.copy(modelPosition);
   }
 
   simulate() {

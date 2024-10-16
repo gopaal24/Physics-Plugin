@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js"
 
 export class ThreejsScene {
   constructor() {
@@ -143,19 +144,39 @@ export class ThreejsScene {
     return mesh;
   }
 
+  addModel() {
+    const loader = new GLTFLoader();
+    loader.load(
+        './src/assets/shiba.glb',
+        (gltf) => {
+            const model = gltf.scene;
+            model.position.set(9, 5, 0);
+            this.addToScene(model);
+        },
+        undefined,
+        (error) => { 
+            console.error('An error occurred while loading the model:', error);
+        }
+    );
+}
+
   raycastHandler(e, physics) {
     const pointer = {
       x: (e.clientX / window.innerWidth) * 2 - 1,
       y: -(e.clientY / window.innerHeight) * 2 + 1,
     };
 
-    this.raycast.setFromCamera(pointer, this.camera);
+    this.raycast.setFromCamera(pointer, this.camera, true);
 
     const intersects = this.raycast.intersectObjects(this.scene.children);
-    if(intersects.length > 0){
-        console.log(intersects[0]);
-        physics.addModel(intersects[0].object)
-    }
+    if (intersects.length > 0 && intersects[0].object) {
+      let intersectedObject = intersects[0].object;
+
+      while (intersectedObject.parent && intersectedObject.parent !== this.scene) {
+          intersectedObject = intersectedObject.parent;
+      }
+      physics.addModel(intersectedObject);
+  }
   }
 
   addRaycast(physics) {
