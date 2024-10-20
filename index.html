@@ -24,7 +24,7 @@
 <body>
     <input type="file" name="glb" id="glb" accept=".glb">
     <div class="controls">
-      <h2>Collider Controls</h2>
+      <h2>Collider Controls</h2> <br>
           <label for="colliderType">Shape:</label>
           <select id="colliderType">
               <option value="auto">Auto</option>
@@ -34,27 +34,31 @@
               <option value="cone">Cone</option>
               <option value="cylinder">Cylinder</option>
           </select>
-          <div id="colliderProperties"></div>
+          <div id="colliderProperties"></div> <br>
+
+          
+            <input type="checkbox" id="debug">
+            <label for="debug">Debug:</label> <br><br>
 
           <label for="rigidBody">Rigid Body:</label>
           <select name="rigidBody" id="rigidBody">
             <option value="fixed">Fixed</option>
             <option value="dynamic">Dynamic</option>
-          </select>
+          </select> <br><br>
 
           <div id="properties">
             <label for="gravity">Gravity</label>
-            <input type="number" id="gravity" value="-9.8">
+            <input type="number" id="gravity" value="-9.8"> <br><br>
             <label for="mass">Mass</label>
-            <input type="number" id="mass" value="1">
+            <input type="number" id="mass" value="1"> <br><br>
             <label for="linDamp">Linear Damping</label>
-            <input type="number" id="linDamp" value="1">
+            <input type="number" id="linDamp" value="1"> <br><br>
   
             <label for="friction">Friction:</label>
-            <input type="number" id="friction" value="0.3">
+            <input type="number" id="friction" value="0.3"> <br><br>
   
             <label for="bounciness">Bounciness:</label>
-            <input type="number" id="bounciness" value="1">
+            <input type="number" id="bounciness" value="1"> <br><br>
           </div>
     </div>
 </body>

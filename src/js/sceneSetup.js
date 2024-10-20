@@ -69,6 +69,7 @@ export class ThreejsScene {
     const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
     groundMesh.rotation.x = -Math.PI / 2;
     groundMesh.receiveShadow = true;
+    console.log(groundMesh)
     this.addToScene(groundMesh);
   }
 
@@ -150,7 +151,7 @@ export class ThreejsScene {
         './src/assets/shiba.glb',
         (gltf) => {
             const model = gltf.scene;
-            model.position.set(9, 5, 0);
+            model.position.set(6, 5, 0);
             this.addToScene(model);
         },
         undefined,
@@ -169,12 +170,13 @@ export class ThreejsScene {
     this.raycast.setFromCamera(pointer, this.camera, true);
 
     const intersects = this.raycast.intersectObjects(this.scene.children);
-    if (intersects.length > 0 && intersects[0].object) {
+    if (intersects.length > 0 && intersects[0].object.name != "ground") {
       let intersectedObject = intersects[0].object;
 
       while (intersectedObject.parent && intersectedObject.parent !== this.scene) {
-          intersectedObject = intersectedObject.parent;
+        intersectedObject = intersectedObject.parent;
       }
+      console.log(intersectedObject)
       physics.addModel(intersectedObject);
   }
   }

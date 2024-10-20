@@ -47,7 +47,7 @@ function main(){
     threejs.createShape('cube', {x: 2, y: 2, z: 2}, {color: 0xff0000}, {x: -2, y: 5, z: 0});
     threejs.createShape('sphere', {x: 1.5}, {color: 0x0000ff}, {x: 2, y: 5, z: 0});
     threejs.createShape('cylinder', {x: 1, y: 1, z: 3}, {color: 0x00ff00}, {x: -5, y: 5, z: 0});
-    threejs.createShape('torus', {x: 1.5, y: 0.4}, {color: 0xffff00}, {x: 6, y: 5, z: 0});
+    // threejs.createShape('torus', {x: 1.5, y: 0.4}, {color: 0xffff00}, {x: 6, y: 5, z: 0});
     threejs.createShape('knot', {x: 1, y: 0.4}, {color: 0xffff00}, {x: -9, y: 5, z: 0});
     threejs.addModel()
 
