@@ -19,6 +19,7 @@ export class Physics {
   }
 
   async init() {
+
     await RAPIER.init();
     this.gravity = new RAPIER.Vector3(0, -9.81, 0);
     this.world = new RAPIER.World(this.gravity);
@@ -59,41 +60,85 @@ export class Physics {
     this.world.createCollider(floorShape, floorBody);
   }
 
-  addCube(l, b, h, x, y, z) {
-    const cubeMesh = new THREE.Mesh(
-      new THREE.BoxGeometry(l, b, h),
-      new THREE.MeshStandardMaterial()
-    );
-    cubeMesh.castShadow = true;
-    this.threejs.addToScene(cubeMesh);
+  addCube(l, b, h, model) {
+    const modelPos = model.getWorldPosition(new THREE.Vector3());
+
     const cubeBody = this.world.createRigidBody(
-      RAPIER.RigidBodyDesc.dynamic().setTranslation(x, y, z).setCanSleep(false)
+      RAPIER.RigidBodyDesc.dynamic()
+      .setTranslation(modelPos.x, modelPos.y, modelPos.z)
+      .setCanSleep(true)
     );
     const cubeShape = RAPIER.ColliderDesc.cuboid(l / 2, b / 2, h / 2)
       .setMass(1)
       .setRestitution(0.5);
     this.world.createCollider(cubeShape, cubeBody);
-    this.dynamicBodies.push([cubeMesh, cubeBody]);
+    this.dynamicBodies.push([model, cubeBody]);
+    this.debug()
   }
 
-  addCylinder(r, h, x, y, z) {
-    const cylinderMesh = new THREE.Mesh(
-      new THREE.CylinderGeometry(r, r, h),
-      new THREE.MeshNormalMaterial()
-    );
-    cylinderMesh.castShadow = true;
-    this.threejs.addToScene(cylinderMesh);
+  addCylinder(r, h, model) {
+    const modelPos = model.getWorldPosition(new THREE.Vector3());
+
     const cylinderBody = this.world.createRigidBody(
-      RAPIER.RigidBodyDesc.dynamic().setTranslation(x, y, z).setCanSleep(false)
+      RAPIER.RigidBodyDesc.dynamic()
+      .setTranslation(modelPos.x, modelPos.y, modelPos.z)
+      .setCanSleep(true)
     );
     const cylinderShape = RAPIER.ColliderDesc.cylinder(h / 2, r)
       .setMass(1)
       .setRestitution(0.2);
     this.world.createCollider(cylinderShape, cylinderBody);
-    this.dynamicBodies.push([cylinderMesh, cylinderBody]);
+    this.dynamicBodies.push([model, cylinderBody]);
+    this.debug()
   }
 
-  addModel(model) { 
+  addPlane(l, w, model) {
+    const modelPos = model.getWorldPosition(new THREE.Vector3());
+
+    const planeBody = this.world.createRigidBody(
+      RAPIER.RigidBodyDesc.dynamic()  
+      .setTranslation(modelPos.x, modelPos.y, modelPos.z)
+    );
+    const planeShape = RAPIER.ColliderDesc.cuboid(l / 2, 0.01, w / 2); 
+    this.world.createCollider(planeShape, planeBody);
+    this.dynamicBodies.push([model, planeBody]);
+    this.debug();
+}
+
+addSphere(r, model) {
+  const modelPos = model.getWorldPosition(new THREE.Vector3());
+
+  const sphereBody = this.world.createRigidBody(
+    RAPIER.RigidBodyDesc.dynamic()
+    .setTranslation(modelPos.x, modelPos.y, modelPos.z)
+    .setCanSleep(true)
+  );
+  const sphereShape = RAPIER.ColliderDesc.ball(r)
+    .setMass(1)
+    .setRestitution(0.5);
+  this.world.createCollider(sphereShape, sphereBody);
+  this.dynamicBodies.push([model, sphereBody]);
+  this.debug();
+}
+
+addCone(r, h, model) {
+  const modelPos = model.getWorldPosition(new THREE.Vector3());
+
+  const coneBody = this.world.createRigidBody(
+    RAPIER.RigidBodyDesc.dynamic()
+    .setTranslation(modelPos.x, modelPos.y, modelPos.z)
+    .setCanSleep(true)
+  );
+  const coneShape = RAPIER.ColliderDesc.cone(h / 2, r) 
+    .setMass(1)
+    .setRestitution(0.4);
+  this.world.createCollider(coneShape, coneBody);
+  this.dynamicBodies.push([model, coneBody]);
+  this.debug();
+}
+
+
+addModel(model) { 
     const modelPosition = new THREE.Vector3();
     model.getWorldPosition(modelPosition);
     
@@ -133,13 +178,13 @@ export class Physics {
     
     this.debug();
     model.position.copy(modelPosition);
-  }
+}
 
   simulate() {
     this.simulationActive = true;
 
     const runSimulation = () => {
-      if (!this.simulationActive) return; // Stop the loop if simulation is inactive
+      if (!this.simulationActive) return;
 
       this.delta = this.clock.getDelta();
       this.world.timestep = Math.min(this.delta, 0.1);
@@ -158,6 +203,6 @@ export class Physics {
   }
 
   stopSimulation() {
-    this.simulationActive = false; // This will stop the simulation loop
+    this.simulationActive = false;
   }
 }

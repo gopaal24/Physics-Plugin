@@ -54,6 +54,10 @@ export class Controls {
             case 'box':
                 if (this.threejs.currentlySelected) {
                     console.log("box")
+                    this.physics.addCube(this.params.colliderOptions.shape.length,
+                                        this.params.colliderOptions.shape.width,
+                                        this.params.colliderOptions.shape.height,
+                                        this.threejs.currentlySelected);
                     
                 } else {
                     console.log("No object selected");
@@ -62,6 +66,8 @@ export class Controls {
             case 'sphere':
                 if (this.threejs.currentlySelected) {
                     console.log("sphere")
+                    this.physics.addSphere(this.params.colliderOptions.shape.radius,
+                        this.threejs.currentlySelected);
                     
                 } else {
                     console.log("No object selected");
@@ -70,14 +76,10 @@ export class Controls {
             case 'plane':
                 if (this.threejs.currentlySelected) {
                     console.log("plane")
-                    
-                } else {
-                    console.log("No object selected");
-                }
-                break;
-            case 'plane':
-                if (this.threejs.currentlySelected) {
-                    console.log("plane")
+                    this.physics.addPlane(this.params.colliderOptions.shape.length,
+                                        this.params.colliderOptions.shape.width,
+                                        this.threejs.currentlySelected
+                    )
                     
                 } else {
                     console.log("No object selected");
@@ -86,6 +88,9 @@ export class Controls {
             case 'cone':
                 if (this.threejs.currentlySelected) {
                     console.log("cone")
+                    this.physics.addCone(this.params.colliderOptions.shape.radius,
+                        this.params.colliderOptions.shape.height,
+                        this.threejs.currentlySelected);
                     
                 } else {
                     console.log("No object selected");
@@ -94,6 +99,9 @@ export class Controls {
             case 'cylinder':
                 if (this.threejs.currentlySelected) {
                     console.log("cylinder")
+                    this.physics.addCylinder(this.params.colliderOptions.shape.radius,
+                                            this.params.colliderOptions.shape.height,
+                                            this.threejs.currentlySelected);
                     
                 } else {
                     console.log("No object selected");

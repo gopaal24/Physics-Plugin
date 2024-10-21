@@ -177,7 +177,6 @@ export class ThreejsScene {
       while (intersectedObject.parent && intersectedObject.parent !== this.scene) {
         intersectedObject = intersectedObject.parent;
       }
-      // physics.addModel(intersectedObject);
       this.currentlySelected = intersectedObject
       console.log(this.currentlySelected)
       physics.debug();
