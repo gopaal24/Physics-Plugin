@@ -16,6 +16,7 @@ export class ThreejsScene {
     document.body.appendChild(this.renderer.domElement);
     this.camera.position.set(0, 5, 20);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.currentlySelected = null;
     this.addLights();
   }
 
@@ -176,8 +177,10 @@ export class ThreejsScene {
       while (intersectedObject.parent && intersectedObject.parent !== this.scene) {
         intersectedObject = intersectedObject.parent;
       }
-      console.log(intersectedObject)
-      physics.addModel(intersectedObject);
+      // physics.addModel(intersectedObject);
+      this.currentlySelected = intersectedObject
+      console.log(this.currentlySelected)
+      physics.debug();
   }
   }
 

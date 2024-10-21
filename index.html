@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="./src/css/styles.css">
 
 </head>
-<body>
+<br>
     <input type="file" name="glb" id="glb" accept=".glb">
     <div class="controls">
       <h2>Collider Controls</h2> <br>
@@ -33,10 +33,10 @@
               <option value="plane">Plane</option>
               <option value="cone">Cone</option>
               <option value="cylinder">Cylinder</option>
-          </select>
+          </select>  </br><br>
           <div id="colliderProperties"></div> <br>
 
-          
+            <button id="addCollider">Add Collider</button> </br></br>
             <input type="checkbox" id="debug">
             <label for="debug">Debug:</label> <br><br>
 
@@ -59,7 +59,10 @@
   
             <label for="bounciness">Bounciness:</label>
             <input type="number" id="bounciness" value="1"> <br><br>
+
           </div>
+
+          <button id="simulation">Start Simulation</button>
     </div>
 </body>
 <script type="importmap">

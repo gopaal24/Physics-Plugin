@@ -1,5 +1,5 @@
 export class Controls {
-    constructor() {
+    constructor(physics, threejs) {
         this.params = {
             colliderOptions: {
                 colliderType: 'auto',
@@ -10,12 +10,18 @@ export class Controls {
                     radius: "0.5"
                 }
             },
-            rigidBodyType : "fixed"
+            rigidBodyType : "fixed",
+            simulationRunning: false
         };
         this.colliderTypeSelect = document.getElementById('colliderType');
         this.colliderProperties = document.getElementById('colliderProperties');
         this.rigidBodyType = document.getElementById('rigidBody');
         this.properties = document.getElementById('properties');
+        this.addColliderButton = document.getElementById('addCollider');
+        this.simulationButton = document.getElementById('simulation');
+        this.physics = physics;
+        this.threejs = threejs;
+
         this.setupEventListeners();
         this.updateGUI();
     }
@@ -29,10 +35,77 @@ export class Controls {
             this.params.rigidBodyType = this.rigidBodyType.value;
             this.updateGUI();
         });
+        this.simulationButton.addEventListener('click', () => {
+            this.toggleSimulation();
+        });
+        this.addColliderButton.addEventListener('click', () => this.addCollider());
+    }
+
+    addCollider() {
+        
+        switch (this.params.colliderOptions.colliderType) {
+            case 'auto':
+                if (this.threejs.currentlySelected) {
+                    this.physics.addModel(this.threejs.currentlySelected);
+                } else {
+                    console.log("No object selected");
+                }
+                break;
+            case 'box':
+                if (this.threejs.currentlySelected) {
+                    console.log("box")
+                    
+                } else {
+                    console.log("No object selected");
+                }
+                break;
+            case 'sphere':
+                if (this.threejs.currentlySelected) {
+                    console.log("sphere")
+                    
+                } else {
+                    console.log("No object selected");
+                }
+                break;
+            case 'plane':
+                if (this.threejs.currentlySelected) {
+                    console.log("plane")
+                    
+                } else {
+                    console.log("No object selected");
+                }
+                break;
+            case 'plane':
+                if (this.threejs.currentlySelected) {
+                    console.log("plane")
+                    
+                } else {
+                    console.log("No object selected");
+                }
+                break;
+            case 'cone':
+                if (this.threejs.currentlySelected) {
+                    console.log("cone")
+                    
+                } else {
+                    console.log("No object selected");
+                }
+                break;
+            case 'cylinder':
+                if (this.threejs.currentlySelected) {
+                    console.log("cylinder")
+                    
+                } else {
+                    console.log("No object selected");
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     updateGUI() {
-        this.colliderProperties.innerHTML = ''; // Clear existing properties
+        this.colliderProperties.innerHTML = ''; 
         
         switch (this.params.colliderOptions.colliderType) {
             case 'box':
@@ -69,11 +142,23 @@ export class Controls {
         }
     }
 
+    toggleSimulation() {
+        this.params.simulationRunning = !this.params.simulationRunning;
+
+        if (this.params.simulationRunning) {
+            this.simulationButton.innerText = "Stop Simulation";
+            this.physics.simulate();
+        } else {
+            this.simulationButton.innerText = "Start Simulation";
+            this.physics.stopSimulation();
+        }
+    }
+
     addInput(property, label) {
         const inputElement = document.createElement('div');
         inputElement.innerHTML = `
             <label for="${property}">${label}:</label>
-            <input type="number" id="${property}" value="${this.params.colliderOptions.shape[property]}">
+            <input type="number" id="${property}" value="${this.params.colliderOptions.shape[property]}"> </br></br>
         `;
         this.colliderProperties.appendChild(inputElement);
         

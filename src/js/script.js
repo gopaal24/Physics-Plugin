@@ -6,7 +6,7 @@ import { Controls } from "./controls.js";
 const threejs = new ThreejsScene();
 const physics = new Physics(threejs);
 
-const gui = new Controls;
+const gui = new Controls(physics, threejs);
 
 const glbUpload = document.getElementById("glb");
 const loader = new GLTFLoader();
@@ -38,7 +38,6 @@ async function addPhysics() {
     
     threejs.initiate();
     
-    physics.simulate();
 }
 
 
@@ -51,7 +50,7 @@ function main(){
     threejs.createShape('knot', {x: 1, y: 0.4}, {color: 0xffff00}, {x: -9, y: 5, z: 0});
     threejs.addModel()
 
-    threejs.addRaycast(physics);
+    threejs.addRaycast(physics, gui);
 
     addPhysics().catch(console.error);
 }

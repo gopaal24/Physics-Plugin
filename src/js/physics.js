@@ -15,6 +15,7 @@ export class Physics {
       new THREE.LineBasicMaterial({ color: 0xffffff, vertexColors: true })
     );
     this.mesh.frustumCulled = false;
+    this.simulationActive = false;
   }
 
   async init() {
@@ -130,25 +131,33 @@ export class Physics {
       } 
     }); 
     
-    
+    this.debug();
     model.position.copy(modelPosition);
   }
 
   simulate() {
-    this.delta = this.clock.getDelta();
-    this.world.timestep = Math.min(this.delta, 0.1);
-    this.world.step();
+    this.simulationActive = true;
 
-    for (let i = 0, n = this.dynamicBodies.length; i < n; i++) {
-      this.dynamicBodies[i][0].position.copy(
-        this.dynamicBodies[i][1].translation()
-      );
-      this.dynamicBodies[i][0].quaternion.copy(
-        this.dynamicBodies[i][1].rotation()
-      );
-    }
+    const runSimulation = () => {
+      if (!this.simulationActive) return; // Stop the loop if simulation is inactive
 
-    this.debug();
-    requestAnimationFrame(() => this.simulate());
+      this.delta = this.clock.getDelta();
+      this.world.timestep = Math.min(this.delta, 0.1);
+      this.world.step();
+
+      for (let i = 0, n = this.dynamicBodies.length; i < n; i++) {
+        this.dynamicBodies[i][0].position.copy(this.dynamicBodies[i][1].translation());
+        this.dynamicBodies[i][0].quaternion.copy(this.dynamicBodies[i][1].rotation());
+      }
+
+      this.debug();
+      requestAnimationFrame(runSimulation);
+    };
+
+    runSimulation();
+  }
+
+  stopSimulation() {
+    this.simulationActive = false; // This will stop the simulation loop
   }
 }
